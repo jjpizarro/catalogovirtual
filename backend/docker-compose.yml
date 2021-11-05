@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo:4.4
+    container_name: mongo
+    hostname: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=catalogovirtual
+      - MONGO_INITDB_ROOT_USERNAME=cvuser
+      - MONGO_INITDB_ROOT_PASSWORD=cvuser123.
+      
+      
+    volumes:
+      - ./mongodb/data:/data/db/
+      - ./mongodb/initdb:/docker-entrypoint-initdb.d/
+    
