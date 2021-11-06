@@ -4,10 +4,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import ProductService from '../services/ProductService';
+import PropTypes from "prop-types";
 
 const ProductForm = (props)=>{
     const {submitForm,handleClose} = props;
-    const [producto, setProducto] = useState({
+    let initialProductState = {
         nombre: props.producto ? props.producto.nombre : '',
         descripcion: props.producto ? props.producto.descripcion : '',
         categoria: props.producto ? props.producto.categoria : '',
@@ -15,7 +16,12 @@ const ProductForm = (props)=>{
         cantidad: props.producto ? props.producto.cantidad : 0,
         disponibilidad: props.producto ? props.producto.disponibilidad : false,
         imagen: props.producto ? props.producto.imagen : ''
-      });
+      };
+      if(props.producto && props.producto.id){
+        initialProductState["id"] = props.producto.id
+      }
+     
+     const [producto, setProducto] = useState(initialProductState);
       const [categories, setCategories] = useState([]);
       
       useEffect(()=>{
@@ -28,7 +34,7 @@ const ProductForm = (props)=>{
                 });
           }
           getCategories();
-      });
+      },[]);
 
       const onChange = e => {
         setProducto({
@@ -97,4 +103,10 @@ const ProductForm = (props)=>{
         </Form>
     );
 }
+ProductForm.propTypes = {
+    handleClose:PropTypes.func.isRequired, 
+    producto:PropTypes.object, 
+    submitForm:PropTypes.func.isRequired
+    
+  };
 export default ProductForm;
