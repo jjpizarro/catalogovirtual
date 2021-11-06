@@ -1,22 +1,10 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import ModalForm from "./ModalForm";
-const ProductListTable = ({products})=>{
-  console.log(products);
-  /*const producto = {
-    id:'123qweasd',
-    nombre: 'jj',
-    descripcion: 'Mi descripcion',
-    categoria: 'Categoria',
-    precio: 12,
-    cantidad: 12,
-    disponibilidad:  true,
-    imagen: 'https://miurl.com'
-  };*/
-  const editProduct = (product)=>{
-    console.log('Editar producto producto');
-    console.log(product);
-  }
+import Button from 'react-bootstrap/Button';
+import PropTypes from "prop-types";
+
+const ProductListTable = ({products,onEdit, onRemove})=>{
     return (<Table bordered hover>
         <thead>
           <tr>
@@ -34,11 +22,18 @@ const ProductListTable = ({products})=>{
           {products.length > 0 ? (
               products.map((product,index)=>
                ( <tr key={index}>
-                    <td><ModalForm label="Editar" styles="d-flex justify-content-center" variant="warning" product={product} onCreateOrUpdate={editProduct} /></td>
-                    <td>Eliminar</td>
+                    <td><ModalForm label="Editar" styles="d-flex justify-content-center" variant="warning" product={product} onCreateOrUpdate={onEdit} /></td>
+             
+                    <td>
+                      <div className="d-flex justify-content-center">
+                         <Button variant="danger" onClick={() => onRemove(product.id)}>
+                           Eliminar
+                        </Button>
+                      </div>
+                    </td>
                     <td>{product.nombre}</td>
                     <td>{product.categoria}</td>
-                    <td>{product.disponible}</td>
+                    <td>{product.disponibilidad? 'Si':'No'}</td>
                     <td>{product.precio}</td>
                     <td>{product.cantidad}</td>
                 </tr>)
@@ -52,4 +47,10 @@ const ProductListTable = ({products})=>{
         </tbody>
       </Table>);
 }
+ProductListTable.propTypes = {
+  onEdit:PropTypes.func.isRequired, 
+  products:PropTypes.object, 
+  onRemove:PropTypes.func.isRequired
+  
+};
 export default ProductListTable;
