@@ -3,6 +3,7 @@ package com.atirodeas.catalogovirtual.backend.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.atirodeas.catalogovirtual.backend.entities.Producto;
 import com.atirodeas.catalogovirtual.backend.services.ProductoService;
@@ -56,6 +57,19 @@ public class ProductoController {
     public ResponseEntity<Producto> getProductoById(@PathVariable("id") String id){
         Optional<Producto> productoInDB = productoServices.buscarPorId(id);
         return productoInDB.map(producto -> new ResponseEntity<>(producto,HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    @GetMapping("/productos/categorias")
+    public ResponseEntity<List<String>> getCategorias(){
+        try {
+            List<String> categorias = new ArrayList<>();
+            productoServices.buscarTodos().forEach(producto ->{categorias.add(producto.getCategoria());});
+            if(categorias.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(categorias.stream().distinct().collect(Collectors.toList()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+         }
     }
     @PostMapping("/productos")
     public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
