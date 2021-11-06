@@ -1,8 +1,9 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import ProductService from '../services/ProductService';
 
 const ProductForm = (props)=>{
     const {submitForm,handleClose} = props;
@@ -15,7 +16,19 @@ const ProductForm = (props)=>{
         disponibilidad: props.producto ? props.producto.disponibilidad : false,
         imagen: props.producto ? props.producto.imagen : ''
       });
+      const [categories, setCategories] = useState([]);
       
+      useEffect(()=>{
+          const getCategories = () =>{
+            ProductService.getAllCategories()
+                .then((response)=>{
+                    setCategories(response.data);
+                }).catch(e => {
+                    console.log(e);
+                });
+          }
+          getCategories();
+      });
 
       const onChange = e => {
         setProducto({
@@ -50,7 +63,8 @@ const ProductForm = (props)=>{
                 <Form.Label>Categoría</Form.Label>
                 <Form.Select defaultValue="Seleccione..." name="categoria" onChange={onChange} value={producto.categoria}>
                     <option>Seleccione...</option>
-                    <option>...</option>
+                    {categories.length > 0 && categories.map((category, index) =>(<option key={index} value={category}>{category}</option>))}
+                    
                 </Form.Select>
             </Form.Group>
             <Row className="mb-3">
