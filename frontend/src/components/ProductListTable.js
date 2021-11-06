@@ -1,6 +1,21 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
+import ModalForm from "../components/ModalForm";
 const ProductListTable = ()=>{
+  const producto = {
+    id:'123qweasd',
+    nombre: 'jj',
+    descripcion: 'Mi descripcion',
+    categoria: 'Categoria',
+    precio: 12,
+    cantidad: 12,
+    disponibilidad:  true,
+    imagen: 'https://miurl.com'
+  };
+  const editProduct = (product)=>{
+    console.log('Editar producto producto');
+    console.log(product);
+  }
     return (<Table bordered hover>
         <thead>
           <tr>
@@ -16,7 +31,7 @@ const ProductListTable = ()=>{
         </thead>
         <tbody>
           <tr>
-            <td>1</td>
+            <td><ModalForm label="Editar" styles="d-flex justify-content-center" variant="warning" product={producto} onCreateOrUpdate={editProduct} /></td>
             <td>Mark</td>
             <td>Otto</td>
             <td>@mdo</td>
