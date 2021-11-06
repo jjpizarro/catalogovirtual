@@ -4,12 +4,10 @@ import Modal from 'react-bootstrap/Modal';
 import ModalBody from 'react-bootstrap/ModalBody';
 import ModalHeader from 'react-bootstrap/ModalHeader';
 import ProductForm from './ProductForm';
-//import Form from 'react-bootstrap/Form';
-//import Row from 'react-bootstrap/Row';
-//import Col from 'react-bootstrap/Col';
+import PropTypes from "prop-types";
 
 
-export default function ModalForm({label, variant,styles, product, onCreateOrUpdate}) {
+const ModalForm = ({label, variant,styles, product, onCreateOrUpdate}) => {
    
   const [show, setShow] = useState(false);
 
@@ -44,3 +42,12 @@ export default function ModalForm({label, variant,styles, product, onCreateOrUpd
       </div>
     )
 }
+ModalForm.propTypes = {
+  label:PropTypes.string.isRequired, 
+  variant:PropTypes.string.isRequired,
+  styles:PropTypes.string.isRequired, 
+  product:PropTypes.object, 
+  onCreateOrUpdate:PropTypes.func.isRequired
+  
+};
+export default ModalForm;
